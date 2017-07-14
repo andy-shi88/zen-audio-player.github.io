@@ -133,7 +133,7 @@ function handleYouTubeError(details) {
 var ZenPlayer = {
     updated: false,
     isPlaying: false,
-    isLoop: false,
+    isRepeat: false,
 
     init: function(videoID) {
         // Inject svg with control icons
@@ -231,11 +231,10 @@ var ZenPlayer = {
                     if (currentTime < videoDuration - 3) {
                         resumeTime = currentTime;
                     }
-
-                    //check time and if isLoop == true
-                    if(currentTime >= videoDuration && that.isLoop) {
-                      resumeTime = 0;
-                      plyrPlayer.plyr.embed.seekTo(resumeTime);
+                    // check time and if isRepeat == true
+                    if (currentTime >= videoDuration && that.isRepeat) {
+                        resumeTime = 0;
+                        plyrPlayer.plyr.embed.seekTo(resumeTime);
                     }
                     window.sessionStorage[videoID] = resumeTime;
                 }
@@ -657,15 +656,11 @@ $(function() {
     if ($.inArray(currentVideoID, demos) !== -1) {
         $("#demo").hide();
     }
-    //handle loop click
-    $("input[name='toggleLoop']").change(function(){
-      if($(this).is(':checked')) {
-        ZenPlayer.isLoop = true;
-      }
-      else {
-        ZenPlayer.isLoop = false;
-      }
+
+    $("input[name='toggleRepeat']").change(function() {
+        ZenPlayer.isRepeat = $(this).is(":checked");
     });
+
     // Handle demo link click
     $("#demo").click(function(event) {
         event.preventDefault();
